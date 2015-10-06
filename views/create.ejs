@@ -1,0 +1,52 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Gerer</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href='/public/stylesheets/style.css'>
+</head>
+<body>
+<div class="container">
+    <header>
+        <% include nav %>
+    </header>
+    <div class="page-header text-center">
+        <h1> Create new task</h1>
+    </div>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+
+        <div class="col-sm-12">
+            <div class="well">
+                <form action="/create" method="post">
+                    <div class="form-group">
+                        <label>Task Name</label>
+                        <input type="text" class="form-control" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="4" cols="50" class="form-control" name="description" ></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Employee</label>
+                        <select type="text" class="form-control" name="employee" >
+                            <% for(var i = 0; i < users.length; ++i) { %>
+                                <option value="<%= users[i].local.email %>"><%= users[i].local.email %></option>
+                                <% } %>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-warning btn-lg">Create Task</button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+body {
+   padding-top: 90px;
+    text-align: center;
+    background-attachment: scroll;
+    background-image: url(../images/bg-photo.JPG);
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+
+}
+
+#startBox {
+    margin: 0 auto;
+
+    padding-top: 30px;
+    padding-bottom: 190px;
+}
+
+#startBox a{
+
+}
+
+#downText p, a{
+    color: black;
+}
+
+#downText hr {
+    border-top: 1px solid #F0AD4E;
+}

@@ -1,0 +1,188 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Gerer</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href='/public/stylesheets/style.css'>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <header>
+        <% include nav %>
+    </header>
+    <% for(var i = 0; i < info.length; ++i) { %>
+    <div class="page-header ">
+        <h1><%= info[i].task.name %>
+
+                 <a type="edit" href="/edit/<%= info[i]._id %>" class="btn btn-warning btn-lg allignRight">Edit</a>
+              <button type="delete" onclick="deleteTask()" class="btn btn-danger btn-lg allignRight">Delete</button>
+
+            </h1>
+
+    </div>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+
+        <div class="col-sm-8">
+            <div class="well">
+
+                <h4>
+                    Description:
+                </h4>
+                <p>
+                   <%= info[i].task.description %>
+                </p>
+            </div>
+
+        </div>
+        <div class="col-sm-4">
+            <div class="well container_div">
+            <h4 onclick="div_show()" id="popup" class="backlight"><span class="fa fa-cog"> </span> Realization: <b id="ajaxUp"> <%= info[i].task.realization%></b>%</h4>
+
+                <div id="abc">
+                    <div id="popupRel">
+                        <form  id="popForm" name="form" action="/show/<%= info[i]._id%>">
+                            <span  id="close" onclick ="div_hide()" class="fa fa-times"></span>
+                            <h2>Update realization</h2>
+                            <hr>
+                            <input id="realization" name="realization" placeholder="Realization" type="number" value="<%= info[i].task.realization%>">
+
+                            <button  id="submit" onclick="div_hide()" class="btn btn-danger btn-lg">Send</button>
+                        </form>
+                    </div>
+                </div>
+                <div id="result"></div>
+                <h4><span class="fa fa-user"></span> Assigned Employee: <%= info[i].task.employee %> </h4>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <div id="commentary" >
+        <h2>Comments <button type="info" onclick="addComment()" class="btn btn-primary btn-lg">Update</button></h2>
+
+        <div  id="shAdd">
+            <div class="well">
+        <form id="addForm" action="/show/<%= info[i]._id%>">
+            <div class="form-group">
+                <textarea rows="10" cols="50" class="form-control" name="comment" placeholder="Enter your comment here..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-warning btn-lg">Send</button>
+        </form>
+        </div>
+        </div >
+       <div id="comDivP">
+        <% for(var i = 0; i < comments.length; ++i) { %>
+        <div class="well">
+            <p><b id="commentName"> <%= comments[i].comment.name%> </b>  <b id="commentDate" onclick="ala()"><%= comments[i].comment.date%></b></p>
+
+            <p> <%= comments[i].comment.text%></p>
+
+        </div>
+        <% } %>
+       </div>
+    </div>
+</div>
+<% } %>
+<script>
+    function div_show() {
+        document.getElementById('abc').style.display = "block";
+    }
+    //Function to Hide Popup
+    function div_hide(){
+        document.getElementById('abc').style.display = "none";
+    }
+    $( "#addForm" ).submit(function( event ) {
+
+        // Stop form from submitting normally
+        event.preventDefault();
+
+        // Get some values from elements on the page:
+        var $form = $( this ),
+                term = $form.find( "textarea[name='comment']" ).val(),
+                url = $form.attr( "action" );
+
+        // Send the data using post
+        var posting = $.post( url, { comment : term } );
+        posting.done(function( data ) {
+
+            console.log("success " +  data.comment);
+
+            var iDiv = document.createElement('div');
+            iDiv.id = 'comDiv';
+            iDiv.className = 'well';
+            pDiv = document.getElementById("comDivP");
+            pDiv.appendChild(iDiv);
+            iDiv.innerHTML = iDiv.innerHTML + "<p style=\"color: #FFBC00; \"><b>" +data.comment.name + "  " +  "</b></p><p>"   + data.comment.text + "</p>" ;
+            document.getElementById('shAdd').style.display = "none";
+        });
+    });
+    // Attach a submit handler to the form
+    $( "#popForm" ).submit(function( event ) {
+
+        // Stop form from submitting normally
+        event.preventDefault();
+
+        // Get some values from elements on the page:
+        var $form = $( this ),
+                term = $form.find( "input[name='realization']" ).val(),
+                url = $form.attr( "action" );
+        // Send the data using post
+        var posting = $.post( url, { realization : term });
+        posting.done(function( data ) {
+
+            console.log("success " +  data.realization);
+
+            $("#ajaxUp").html(data.realization);
+        });
+    });
+
+
+
+    function deleteTask(){
+      var r =  confirm("Czy na pewno chcesz usunąć to zadanie ?");
+        if(r == true){
+
+            $.ajax({
+                url: window.location.pathname,
+                type: 'DELETE',
+                success: function(result) {
+                    window.location.replace('/board')
+                    console.log(result);
+                }
+
+            });
+            //window.location.replace('/board')
+        } else {
+
+        }
+    }
+    document.getElementById('shAdd').style.display = "none"
+
+
+
+    function addComment(){
+    if(document.getElementById('shAdd').style.display = "none" ){
+        document.getElementById('shAdd').style.display = "block";
+    }else {
+        console.log("Jak to ?");
+    }
+
+    }
+
+</script>
+</body>
+
+
+</html>

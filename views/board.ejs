@@ -1,0 +1,52 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Gerer</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href='/public/stylesheets/style.css'>
+</head>
+<body>
+
+<div class="container">
+   <header>
+    <% include nav %>
+   </header>
+
+    <div class="page-header text-center">
+        <h1>Tasks Board</h1>
+    </div>
+
+    <div class="row">
+
+    <% for(var i = 0; i < tasks.length; ++i) { %>
+    <a href="/show/<%= tasks[i]._id %>">
+
+
+        <!-- LOCAL INFORMATION -->
+
+        <div class="col-sm-4">
+            <div class="well">
+
+                <h3><%= tasks[i].task.name %></h3>
+
+                <p>
+                    <span class="fa fa-cog"></span> Realization: <%= tasks[i].task.realization %>%
+                </p>
+                <p>
+                    <span class="fa fa-user"></span> Assigned Employee: <%= tasks[i].task.employee %>
+                </p>
+
+            </div>
+
+</div>
+
+    </a>
+    <% } %>
+
+</div>
+</div>
+
+</body>
+</html>
